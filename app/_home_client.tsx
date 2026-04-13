@@ -1,0 +1,188 @@
+"use client";
+
+import { useState, useMemo, useEffect } from "react";
+import Navbar from "./components/Navbar";
+import Banner from "./components/Banner";
+import AppCard from "./components/AppCard";
+import Footer from "./components/Footer";
+
+import type { Game } from "./types";
+
+const CATEGORIES = ["All Apps", "New Apps"];
+
+
+export default function HomeClient() {
+  const [activeTab, setActiveTab] = useState("All Apps");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [games, setGames] = useState<Game[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    setLoading(true);
+    fetch(
+      `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api"}/get-all-game`,
+      { signal: controller.signal }
+    )
+      .then((r) => r.json())
+      .then((data) => {
+        setGames((data.data || []).filter(Boolean));
+        setLoading(false);
+      })
+      .catch((e) => {
+        if (e.name !== "AbortError") {
+          setError("Failed to load games. Please try again.");
+          setLoading(false);
+        }
+      });
+    return () => controller.abort();
+  }, []);
+
+  const newGamesCount = games.filter((g) => g.isNewGame).length;
+
+  const filteredGames = useMemo(() => {
+    let result = [...games];
+
+    if (activeTab === "New Apps") {
+      result = result.filter((g) => g.isNewGame);
+    }
+
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      result = result.filter(
+        (g) =>
+          g.name.toLowerCase().includes(q) ||
+          (g.category || "").toLowerCase().includes(q) ||
+          (g.tags || []).some((tag) => tag.toLowerCase().includes(q))
+      );
+    }
+
+    return result;
+  }, [activeTab, searchQuery, games]);
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
+      <Banner />
+
+      <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6">
+        {/* Search Bar */}
+        <div className="mb-6">
+          <div className="relative max-w-xl mx-auto">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+            <input
+              type="text"
+              placeholder="Search apps by name, category, or tags..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-12 pr-4 py-3 bg-white border-2 border-blue-200 focus:border-blue-500 rounded-xl text-slate-700 placeholder-slate-400 text-sm focus:outline-none focus:ring-4 focus:ring-blue-100 transition-all duration-200 shadow-sm"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery("")}
+                className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600 transition-colors"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Tabs */}
+        <div className="mb-6 flex justify-center">
+          <div className="flex gap-1 bg-white border border-blue-100 rounded-xl p-1 shadow-sm">
+            {CATEGORIES.map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`px-6 py-2 rounded-lg text-sm font-semibold whitespace-nowrap transition-all duration-200 ${
+                  activeTab === tab
+                    ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-md"
+                    : "text-slate-600 hover:text-blue-700 hover:bg-blue-50"
+                }`}
+              >
+                {tab}
+                {tab === "New Apps" && newGamesCount > 0 && (
+                  <span className="ml-1.5 bg-emerald-500 text-white text-xs px-1.5 py-0.5 rounded-full">
+                    {newGamesCount}
+                  </span>
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Loading */}
+        {loading && (
+          <div className="flex flex-col items-center justify-center py-20 gap-4">
+            <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin" />
+            <p className="text-slate-500 text-sm">Loading games...</p>
+          </div>
+        )}
+
+        {/* Error */}
+        {!loading && error && (
+          <div className="text-center py-20">
+            <div className="text-5xl mb-4">⚠️</div>
+            <p className="text-slate-600 font-semibold mb-2">{error}</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="mt-2 text-blue-600 hover:text-blue-700 font-medium text-sm underline"
+            >
+              Retry
+            </button>
+          </div>
+        )}
+
+        {/* Content */}
+        {!loading && !error && (
+          <>
+            {/* App count */}
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-slate-700 font-semibold text-sm">
+                {filteredGames.length === 0
+                  ? "No apps found"
+                  : `Showing ${filteredGames.length} app${filteredGames.length !== 1 ? "s" : ""}`}
+                {searchQuery && (
+                  <span className="text-blue-500 ml-1">for &quot;{searchQuery}&quot;</span>
+                )}
+              </h2>
+              <span className="text-xs text-slate-400 bg-blue-50 border border-blue-100 px-3 py-1 rounded-full">
+                {activeTab}
+              </span>
+            </div>
+
+            {filteredGames.length > 0 ? (
+              <div className="flex flex-col gap-3">
+                {filteredGames.map((game, idx) => (
+                  <AppCard key={game._id} game={game} index={filteredGames.length - idx} />
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-20">
+                <div className="text-6xl mb-4">🔍</div>
+                <h3 className="text-slate-600 font-semibold text-lg mb-2">No apps found</h3>
+                <p className="text-slate-400 text-sm">Try a different search term or browse other categories.</p>
+                <button
+                  onClick={() => { setSearchQuery(""); setActiveTab("All Apps"); }}
+                  className="mt-4 text-blue-600 hover:text-blue-700 font-medium text-sm underline"
+                >
+                  Clear filters
+                </button>
+              </div>
+            )}
+          </>
+        )}
+      </main>
+
+      <Footer />
+    </div>
+  );
+}

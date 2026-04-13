@@ -1,65 +1,53 @@
-import Image from "next/image";
+// Server component — exports SEO metadata and renders client component
+import type { Metadata } from "next";
+import HomeClient from "./_home_client";
 
-export default function Home() {
-  return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+const SITE_URL = "https://www.allyonoogames.com";
+const SITE_NAME = "All Yono Games";
+
+const allKeywords = [
+  "all yono games", "yono games", "allyonoogames.com", "allyonoogames",
+  "yono rummy", "yono 777", "jaiho games", "jaiho rummy", "jaiho 777",
+  "gono games", "yono all games", "all yono apps 2024", "all yono apps 2026",
+  "new yono app 2024", "new yono app 2026",
+  "joy rummy", "inr rummy", "boss rummy", "ever 777", "rummy 888", "rummy 77",
+  "rummy ludo", "777 game", "abc rummy", "neta vip", "saga slots", "good slots",
+  "yono 808 slots", "yoho slots", "yn rummy", "yoyo slots",
+  "rummy 51", "mqm bet", "jaiho rummy", "yono arcade", "jaiho spin", "rummy 91",
+  "slots spin", "jaiho arcade", "yono vip", "567 slots", "slots winner",
+  "mkm bet", "all rummy apps", "ind club", "yono slots", "spin crush",
+  "diwa 777", "jaiho slots", "all yono apps", "spin winner", "gogo rummy",
+  "ind slots", "spin lucky", "rummy 420", "spin gold", "mdm bet",
+  "789 jackpots", "en 365", "ind bingo", "my 777", "101z app",
+  "download rummy apk free", "signup bonus ₹500", "signup bonus ₹1000",
+  "min withdrawal ₹100", "top earning apps india", "real cash games india",
+  "best rummy apps india", "yono games list 2026", "yono games list apk",
+  "rummy apk download", "earn money online india",
+].join(", ");
+
+export const metadata: Metadata = {
+  title: `${SITE_NAME} – Download All Yono Rummy, Slots & Earning Apps 2026`,
+  description:
+    "All Yono Games – Download Yono Rummy, Joy Rummy, INR Rummy, Jaiho Rummy, Spin 777, Hindi 777, Ok Rummy, Yono VIP & 50+ Top Earning Apps. Get ₹500–₹1500 Signup Bonus. Min Withdraw ₹100. Free APK Download.",
+  keywords: allKeywords,
+  alternates: { canonical: SITE_URL },
+  openGraph: {
+    type: "website",
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    title: `${SITE_NAME} – Download All Yono Games, Rummy & Slots APK`,
+    description:
+      "All Yono Games – Yono Rummy, Jaiho 777, Ok Rummy, Game Rummy & 50+ Apps. Get ₹500–₹1500 Bonus. Min Withdraw ₹100. Free APK Download.",
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: SITE_NAME }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${SITE_NAME} – All Yono Rummy & Slots Apps`,
+    description: "Download All Yono Games – Rummy, Slots, Bingo. Get up to ₹1500 Bonus!",
+    images: [`${SITE_URL}/og-image.png`],
+  },
+};
+
+export default function HomePage() {
+  return <HomeClient />;
 }
