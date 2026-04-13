@@ -19,7 +19,11 @@ app.use(express.urlencoded({ extended: true, limit:"10kb"}));
 
 app.use(cors({
     origin: [
-        "https://localhost:3000"
+        "http://localhost:3000",
+        "https://localhost:3000",
+        "http://localhost:3001",
+        "https://localhost:3001",
+        "https://www.allyonoogames.com",
     ],
     credentials: true,
     exposedHeaders:["set-cookie"]

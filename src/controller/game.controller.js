@@ -26,3 +26,17 @@ export const getGame = async (req, res, next) => {
     next(err);
   }
 };
+
+// DELETE game by id
+export const deleteGame = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const game = await Game.findByIdAndDelete(id);
+    if (!game) {
+      return res.status(404).json({ success: false, message: "Game not found" });
+    }
+    res.json({ success: true, message: "Game deleted successfully" });
+  } catch (err) {
+    next(err);
+  }
+};

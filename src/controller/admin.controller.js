@@ -82,3 +82,27 @@ export const loginAdmin = async (req, res, next) => {
     next(err);
   }
 };
+
+// List all admins
+export const listAdmins = async (req, res, next) => {
+  try {
+    const admins = await Admin.find({}, { password: 0 }).lean();
+    res.status(200).json({ success: true, data: admins });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// Delete admin by id
+export const deleteAdmin = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const admin = await Admin.findByIdAndDelete(id);
+    if (!admin) {
+      return res.status(404).json({ success: false, message: "Admin not found" });
+    }
+    res.status(200).json({ success: true, message: "Admin deleted" });
+  } catch (err) {
+    next(err);
+  }
+};

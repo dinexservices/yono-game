@@ -47,8 +47,8 @@ const createGame = async (req, res, next) => {
       ? slugify(slug, { lower: true, strict: true })
       : await generateUniqueSlug(name);
 
-    // 🔹 Handle file upload
-    let logoUrl = "";
+    // 🔹 Handle file upload (also accept logoUrl from body for seeding)
+    let logoUrl = req.body.logoUrl || "";
     if (req.file) {
       logoUrl = req.file.path;
     }
