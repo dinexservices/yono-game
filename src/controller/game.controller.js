@@ -26,13 +26,3 @@ export const getGame = async (req, res, next) => {
     next(err);
   }
 };
-
-// CREATE game
-export const createGame = async (req, res, next) => {
-  try {
-    const game = await Game.create(req.body);
-    res.status(201).json({ success: true, data: game });
-  } catch (err) {
-    next(err);
-  }
-};
