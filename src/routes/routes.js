@@ -5,10 +5,16 @@ import {
   createGame,
 } from "../controller/game.controller.js";
 
-const gameRoute = express.Router();
+import {signupAdmin, loginAdmin} from "../controller/admin.controller.js"
 
-gameRoute.get("/get-all-game", getGames);
-gameRoute.get("/game/:slug", getGame);
-gameRoute.post("/create-game", createGame);
+const router = express.Router();
 
-export default gameRoute;
+router.get("/get-all-game", getGames);
+router.get("/:slug", getGame);
+router.post("/create-game", createGame);
+
+
+router.post("/signup", signupAdmin);
+router.post("/login", loginAdmin)
+
+export default router;
