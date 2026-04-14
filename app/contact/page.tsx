@@ -13,19 +13,13 @@ export default function ContactPage() {
             Reach out to us through any of the following channels:
           </p>
           <div className="space-y-4">
-            <div className="flex items-center gap-3 p-4 bg-blue-50 rounded-xl">
-              <span className="text-2xl">📧</span>
-              <div>
-                <p className="text-xs text-blue-500 font-medium">Email</p>
-                <p className="text-slate-700 font-semibold">support@casinohub.com</p>
-              </div>
-            </div>
+         
             <div className="flex items-center gap-3 p-4 bg-blue-50 rounded-xl">
               <span className="text-2xl">📱</span>
               <div>
                 <p className="text-xs text-blue-500 font-medium">Telegram</p>
-                <a href="https://t.me/casinohub" className="text-blue-700 font-semibold hover:underline">
-                  https://t.me/casinohub
+                <a href="https://t.me/+N3fCKqQK5tYxODdl" className="text-blue-700 font-semibold hover:underline">
+                  https://t.me/+N3fCKqQK5tYxODdl
                 </a>
               </div>
             </div>

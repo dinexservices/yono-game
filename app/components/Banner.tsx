@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 const TELEGRAM_LINK = "https://t.me/+N3fCKqQK5tYxODdl";
-const TELEGRAM_DISPLAY = "https://t.me/allyonoogames";
+const TELEGRAM_DISPLAY = "https://t.me/+N3fCKqQK5tYxODdl";
 const SITE_URL = "allyonoogames.com";
 const SITE_NAME = "All Yono Games";
 
