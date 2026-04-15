@@ -1,11 +1,8 @@
-"use client";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import toast from "react-hot-toast";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { signupAdmin, clearError, clearSignupSuccess } from "@/store/slices/authSlice";
-import { Eye, EyeOff, Gamepad2, UserPlus } from "lucide-react";
+import { redirect } from "next/navigation";
+
+export default function SignupPage() {
+  redirect("/login");
+}
 
 export default function SignupPage() {
   const dispatch = useAppDispatch();

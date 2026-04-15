@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import toast from "react-hot-toast";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { loginAdmin, clearError } from "@/store/slices/authSlice";
@@ -124,23 +123,6 @@ export default function LoginPage() {
             {loading ? "Signing in..." : "Sign In"}
           </button>
         </form>
-
-        <p
-          style={{
-            textAlign: "center",
-            marginTop: 24,
-            fontSize: 14,
-            color: "var(--text-overlay)",
-          }}
-        >
-          Don&apos;t have an account?{" "}
-          <Link
-            href="/signup"
-            style={{ color: "var(--accent-purple)", textDecoration: "none", fontWeight: 500 }}
-          >
-            Create one
-          </Link>
-        </p>
       </div>
     </div>
   );
