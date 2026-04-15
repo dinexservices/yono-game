@@ -1,14 +1,20 @@
 import { v2 as cloudinary } from "cloudinary";
 import multer from "multer";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
-import dotenv from "dotenv";
 
-dotenv.config();
+
+const { CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET } = process.env;
+
+if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_API_KEY || !CLOUDINARY_API_SECRET) {
+  console.error("❌ Cloudinary env vars missing:", { CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY: !!CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET: !!CLOUDINARY_API_SECRET });
+} else {
+  console.log("✅ Cloudinary config loaded:", CLOUDINARY_CLOUD_NAME);
+}
 
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
+  cloud_name: CLOUDINARY_CLOUD_NAME,
+  api_key: CLOUDINARY_API_KEY,
+  api_secret: CLOUDINARY_API_SECRET,
 });
 
 const storage = new CloudinaryStorage({

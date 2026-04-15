@@ -5,55 +5,42 @@ import rateLimit from "express-rate-limit";
 import slowDown from "express-slow-down";
 import helmet from "helmet";
 
-import dotenv from "dotenv";
-dotenv.config();
-
-// import cloudRedisClient from "./config/redis.config.js";
-import gameRoute from "./routes/routes.js"
+import gameRoute from "./routes/routes.js";
+import errorHandler from "./middleware/error.middleware.js";
 
 const app = express();
 
 app.use(cookieParser());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true, limit:"10kb"}));
+app.use(express.urlencoded({ extended: true, limit: "10kb" }));
 
-app.use(cors({
+app.use(
+  cors({
     origin: [
-        "http://localhost:3000",
-        "https://localhost:3000",
-        "http://localhost:3001",
-        "https://localhost:3001",
-        "https://www.allyonoogames.com",
+      "http://localhost:3000",
+      "https://localhost:3000",
+      "http://localhost:3001",
+      "https://localhost:3001",
+      "https://www.allyonoogames.com",
     ],
     credentials: true,
-    exposedHeaders:["set-cookie"]
-}));
-
+    exposedHeaders: ["set-cookie"],
+  })
+);
 
 app.use(helmet());
 
-
-// (async () => {
-//   try {
-//     const pong = await cloudRedisClient.ping();
-//     console.log("✅ Cloud Redis connected:", pong);
-//   } catch (error) {
-//     console.error("❌ Redis connection error:", error);
-//     process.exit(1);
-//   }
-// })();
-
 const limiter = rateLimit({
-  windowMs: 60*1000,
+  windowMs: 60 * 1000,
   max: 100,
   standardHeaders: true,
-  legacyHeaders: false
+  legacyHeaders: false,
 });
 
 const speedLimiter = slowDown({
-  windowMs: 60*1000,
-  delayAfter: 50,        // after 50 req/min
-  delayMs: () => 500,    // add 500ms delay per request
+  windowMs: 60 * 1000,
+  delayAfter: 50,
+  delayMs: () => 500,
 });
 
 // Health Check
@@ -66,5 +53,7 @@ app.get("/", (req, res) => {
 
 app.use("/api", limiter, speedLimiter, gameRoute);
 
+// ⚠️ Global error handler — MUST be registered last
+app.use(errorHandler);
 
 export default app;
