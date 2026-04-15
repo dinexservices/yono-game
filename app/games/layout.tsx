@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -29,6 +29,9 @@ export default function GamesLayout({
   const pathname = usePathname();
   const dispatch = useAppDispatch();
   const admin = useAppSelector((s) => s.auth.admin);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => { setMounted(true); }, []);
 
   useEffect(() => {
     if (!admin) {
@@ -101,7 +104,7 @@ export default function GamesLayout({
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <span style={{ fontSize: 13, color: "var(--text-overlay)" }}>
-              {new Date().toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
+              {mounted ? new Date().toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }) : ""}
             </span>
             <div style={{ width: 32, height: 32, borderRadius: 99, background: "linear-gradient(135deg, #cba6f7, #89b4fa)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 700, color: "#11111b" }}>
               {admin.name?.[0]?.toUpperCase() || "A"}
