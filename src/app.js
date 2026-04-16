@@ -9,6 +9,7 @@ import gameRoute from "./routes/routes.js";
 import errorHandler from "./middleware/error.middleware.js";
 
 const app = express();
+app.set("trust proxy", 1);
 
 app.use(cookieParser());
 app.use(express.json());
