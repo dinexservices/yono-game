@@ -89,6 +89,7 @@ export default function EditGamePage() {
           description: game.description || "",
           longDescription: game.longDescription || "",
           tags: game.tags?.join(", ") || "",
+          faqs: game.faqs || [],
           isNewGame: game.isNewGame || false,
           isFree: game.isFree !== false,
         }}

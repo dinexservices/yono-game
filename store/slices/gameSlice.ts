@@ -16,6 +16,7 @@ export interface Game {
   description?: string;
   longDescription?: string;
   tags?: string[];
+  faqs?: { question: string; answer: string }[];
   isNewGame?: boolean;
   isFree?: boolean;
   relatedApps?: string[];

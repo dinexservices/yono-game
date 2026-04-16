@@ -20,6 +20,7 @@ export interface GameFormData {
   tags: string;
   isNewGame: boolean;
   isFree: boolean;
+  faqs?: any;
   logo?: File | null;
 }
 
@@ -66,6 +67,9 @@ export default function GameForm({
         : []
       : []
   );
+  const [faqsList, setFaqsList] = useState<{ question: string; answer: string }[]>(
+    Array.isArray(initialData?.faqs) ? initialData.faqs : []
+  );
   const fileRef = useRef<HTMLInputElement>(null);
 
   const set = (field: keyof GameFormData, value: string | boolean | File | null) => {
@@ -92,11 +96,28 @@ export default function GameForm({
     setTagInput("");
   };
 
+  const addFaq = () => {
+    setFaqsList((prev) => [...prev, { question: "", answer: "" }]);
+  };
+
+  const removeFaq = (index: number) => {
+    setFaqsList((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const updateFaq = (index: number, field: "question" | "answer", value: string) => {
+    setFaqsList((prev) => {
+      const next = [...prev];
+      next[index][field] = value;
+      return next;
+    });
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const data: GameFormData = {
       ...form,
       tags: tagList.join(","),
+      faqs: JSON.stringify(faqsList),
     };
     onSubmit(data);
   };
@@ -279,6 +300,54 @@ export default function GameForm({
             Free to Download
           </label>
         </div>
+      </div>
+
+      {/* FAQs */}
+      <div className="card">
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+          <h3 style={{ fontWeight: 600, color: "var(--accent-green)" }}>FAQs</h3>
+          <button type="button" className="btn-secondary" onClick={addFaq}>
+            <Plus size={16} /> Add FAQ
+          </button>
+        </div>
+        {faqsList.length === 0 ? (
+          <p style={{ fontSize: 13, color: "var(--text-overlay)" }}>No FAQs added. Click "Add FAQ" to create one.</p>
+        ) : (
+          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            {faqsList.map((faq, index) => (
+              <div key={index} style={{ background: "var(--bg-surface0)", padding: 16, borderRadius: 8, position: "relative" }}>
+                <button
+                  type="button"
+                  onClick={() => removeFaq(index)}
+                  style={{ position: "absolute", top: 12, right: 12, background: "rgba(255,0,0,0.1)", color: "red", border: "none", borderRadius: "50%", padding: 4, cursor: "pointer" }}
+                >
+                  <X size={14} />
+                </button>
+                <div style={{ marginBottom: 12 }}>
+                  <label className="label">Question {index + 1}</label>
+                  <input
+                    className="input"
+                    placeholder="e.g. How do I sign up?"
+                    value={faq.question}
+                    onChange={(e) => updateFaq(index, "question", e.target.value)}
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="label">Answer</label>
+                  <textarea
+                    className="textarea"
+                    placeholder="Provide the answer..."
+                    value={faq.answer}
+                    onChange={(e) => updateFaq(index, "answer", e.target.value)}
+                    style={{ minHeight: 60 }}
+                    required
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Tags */}
