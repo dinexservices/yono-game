@@ -6,38 +6,25 @@ import Banner from "./components/Banner";
 import AppCard from "./components/AppCard";
 import Footer from "./components/Footer";
 
-import type { Game } from "./types";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { fetchAllGames } from "@/store/slices/gameSlice";
 
 const CATEGORIES = ["All Apps", "New Apps"];
 
 
 export default function HomeClient() {
+  const dispatch = useAppDispatch();
+  const { games, loading, error } = useAppSelector((state) => state.game);
+
   const [activeTab, setActiveTab] = useState("All Apps");
   const [searchQuery, setSearchQuery] = useState("");
-  const [games, setGames] = useState<Game[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const controller = new AbortController();
-    setLoading(true);
-    fetch(
-      `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api"}/get-all-game`,
-      { signal: controller.signal }
-    )
-      .then((r) => r.json())
-      .then((data) => {
-        setGames((data.data || []).filter(Boolean));
-        setLoading(false);
-      })
-      .catch((e) => {
-        if (e.name !== "AbortError") {
-          setError("Failed to load games. Please try again.");
-          setLoading(false);
-        }
-      });
-    return () => controller.abort();
-  }, []);
+    // Only fetch if the store is empty (avoids re-fetching on back-navigation)
+    if (games.length === 0) {
+      dispatch(fetchAllGames());
+    }
+  }, [dispatch]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const newGamesCount = games.filter((g) => g.isNewGame).length;
 
@@ -102,11 +89,10 @@ export default function HomeClient() {
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-6 py-2 rounded-lg text-sm font-semibold whitespace-nowrap transition-all duration-200 ${
-                  activeTab === tab
+                className={`px-6 py-2 rounded-lg text-sm font-semibold whitespace-nowrap transition-all duration-200 ${activeTab === tab
                     ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-md"
                     : "text-slate-600 hover:text-blue-700 hover:bg-blue-50"
-                }`}
+                  }`}
               >
                 {tab}
                 {tab === "New Apps" && newGamesCount > 0 && (

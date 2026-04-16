@@ -9,7 +9,7 @@ import type { Game } from "../../types";
 
 const SITE_URL = "https://www.allyonoogames.com";
 const SITE_NAME = "All Yono Games";
-const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.allyonoogames.com/api";
 
 async function getGameBySlug(slug: string): Promise<Game | null> {
   try {

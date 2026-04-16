@@ -35,12 +35,22 @@ const initialState: GameState = {
   error: null,
 };
 
-export const fetchGames = createAsyncThunk(
+export const fetchAllGames = createAsyncThunk(
   "game/fetchAll",
   async (_, { rejectWithValue }) => {
     try {
-      const res = await api.get("/get-all-game");
-      return res.data.data as Game[];
+      const allGames: Game[] = [];
+      let page = 1;
+      while (true) {
+        const res = await api.get(`/get-all-game?page=${page}&limit=100`);
+        const batch: Game[] = (res.data.data || []).filter(Boolean);
+        if (batch.length === 0) break;
+        allGames.push(...batch);
+        // If server returned fewer items than the limit we've hit the last page
+        if (batch.length < 100) break;
+        page++;
+      }
+      return allGames;
     } catch (err: any) {
       return rejectWithValue(err.response?.data?.message || "Failed to fetch games");
     }
@@ -69,12 +79,12 @@ const gameSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchGames.pending, (state) => { state.loading = true; state.error = null; })
-      .addCase(fetchGames.fulfilled, (state, action) => {
+      .addCase(fetchAllGames.pending, (state) => { state.loading = true; state.error = null; })
+      .addCase(fetchAllGames.fulfilled, (state, action) => {
         state.loading = false;
         state.games = action.payload;
       })
-      .addCase(fetchGames.rejected, (state, action) => {
+      .addCase(fetchAllGames.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       })
@@ -92,3 +102,5 @@ const gameSlice = createSlice({
 
 export const { clearSelectedGame } = gameSlice.actions;
 export default gameSlice.reducer;
+// Keep legacy alias so any other imports don't break
+export const fetchGames = fetchAllGames;
