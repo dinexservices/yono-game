@@ -49,5 +49,5 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage() {
-  return <HomeClient />;
+  return <HomeClient showFixedCard={true} />;
 }

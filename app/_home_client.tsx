@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
 import Navbar from "./components/Navbar";
 import Banner from "./components/Banner";
 import AppCard from "./components/AppCard";
@@ -12,7 +14,12 @@ import { fetchAllGames } from "@/store/slices/gameSlice";
 const CATEGORIES = ["All Apps", "New Apps"];
 
 
-export default function HomeClient() {
+type HomeClientProps = {
+  showFixedCard?: boolean;
+  filterByTag?: string;
+};
+
+export default function HomeClient({ showFixedCard = false, filterByTag }: HomeClientProps = {}) {
   const dispatch = useAppDispatch();
   const { games, loading, error } = useAppSelector((state) => state.game);
 
@@ -33,6 +40,15 @@ export default function HomeClient() {
 
     if (activeTab === "New Apps") {
       result = result.filter((g) => g.isNewGame);
+    }
+
+    if (filterByTag) {
+      const lowerTag = filterByTag.toLowerCase();
+      result = result.filter(
+        (g) =>
+          g.name.toLowerCase().includes(lowerTag) ||
+          (g.tags || []).some((t) => t.toLowerCase() === lowerTag)
+      );
     }
 
     if (searchQuery.trim()) {
@@ -147,8 +163,42 @@ export default function HomeClient() {
 
             {filteredGames.length > 0 ? (
               <div className="flex flex-col gap-3">
+                {showFixedCard && (
+                  <div className="relative overflow-hidden flex items-center gap-4 bg-white rounded-xl border border-blue-100 shadow-sm px-4 py-3 group hover:shadow-md hover:border-blue-200 transition-all duration-200">
+                    <div className="absolute top-0 left-0 bg-blue-500 text-white font-bold text-[10px] sm:text-xs px-2 py-0.5 rounded-br-lg z-10 flex items-center justify-center shadow-sm">
+                      #1
+                    </div>
+                    <div className="shrink-0 w-14 h-14 rounded-xl overflow-hidden shadow-md flex items-center justify-center cursor-default">
+                      <Image src="/logo.jpeg" alt="All Yono Games Logo" width={56} height={56} className="w-full h-full object-cover" unoptimized />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="cursor-default">
+                        <h3 className="font-bold text-slate-800 text-sm truncate">All Yono Game</h3>
+                      </div>
+                      <div className="flex flex-col gap-0.5 mt-1">
+                        <div className="flex items-center gap-1 text-xs text-emerald-600 font-medium">
+                          <span>🎁</span>
+                          <span>Bonus Upto ₹1000</span>
+                        </div>
+                        <div className="flex items-center gap-1 text-xs text-blue-600 font-medium">
+                          <span>💳</span>
+                          <span>Min. Withdraw ₹100</span>
+                        </div>
+                      </div>
+                    </div>
+                    <Link
+                      href="/yono"
+                      className="shrink-0 flex items-center gap-1.5 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white text-xs font-bold px-4 py-2.5 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 active:scale-95 cursor-pointer"
+                    >
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                      </svg>
+                      Download
+                    </Link>
+                  </div>
+                )}
                 {filteredGames.map((game, idx) => (
-                  <AppCard key={game._id} game={game} index={filteredGames.length - idx} />
+                  <AppCard key={game._id} game={game} index={showFixedCard ? idx + 2 : idx + 1} />
                 ))}
               </div>
             ) : (

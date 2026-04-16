@@ -277,6 +277,28 @@ export default async function AppDetailPage({
           )}
         </div>
 
+        {/* FAQs */}
+        {(game.faqs || []).length > 0 && (
+          <div className="mt-2 mb-6 flex flex-col gap-4">
+            {game.faqs!.map((faq, idx) => (
+              <details key={idx} className="bg-[#ccff80] rounded-xl border border-[#b2e666] text-black shadow-sm group overflow-hidden">
+                <summary className="font-bold text-[15px] p-4 sm:p-5 cursor-pointer list-none [&::-webkit-details-marker]:hidden flex justify-between items-center bg-[#c5f57a] hover:bg-[#bdf071] transition-colors">
+                  <span>Q.{idx + 1} &nbsp; {faq.question}</span>
+                  <span className="transition-transform duration-200 group-open:rotate-180 shrink-0 ml-4">
+                    <svg className="w-5 h-5 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </span>
+                </summary>
+                <div className="text-[14px] whitespace-pre-line leading-relaxed px-4 sm:px-5 pb-5 pt-4 border-t border-[#aee05f]">
+                  <span className="font-bold">Answer: </span>
+                  {faq.answer}
+                </div>
+              </details>
+            ))}
+          </div>
+        )}
+
         {/* Related Apps */}
         {related.length > 0 && (
           <div>
@@ -291,7 +313,7 @@ export default async function AppDetailPage({
             </div>
             <div className="flex flex-col gap-3 bg-white border border-blue-100 border-t-0 rounded-b-xl p-4 shadow-sm">
               {related.map((relGame, idx) => (
-                <AppCard key={relGame._id} game={relGame} index={related.length - idx} />
+                <AppCard key={relGame._id} game={relGame} index={idx + 1} />
               ))}
             </div>
           </div>

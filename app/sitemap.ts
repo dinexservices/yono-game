@@ -1,8 +1,18 @@
-import { apps } from "./data/apps";
+import type { Game } from "./types";
 
 const SITE_URL = "https://www.allyonoogames.com";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.allyonoogames.com/api";
 
-export default function sitemap() {
+export default async function sitemap() {
+  let apps: Game[] = [];
+  try {
+    const res = await fetch(`${API}/get-all-game`, { next: { revalidate: 60 } });
+    const data = await res.json();
+    apps = (data.data || []).filter(Boolean);
+  } catch {
+    apps = [];
+  }
+
   const appUrls = apps.map((app) => ({
     url: `${SITE_URL}/app/${app.slug}`,
     lastModified: new Date(),
@@ -16,6 +26,12 @@ export default function sitemap() {
       lastModified: new Date(),
       changeFrequency: "daily" as const,
       priority: 1.0,
+    },
+    {
+      url: `${SITE_URL}/yono`,
+      lastModified: new Date(),
+      changeFrequency: "daily" as const,
+      priority: 0.9,
     },
     {
       url: `${SITE_URL}/contact`,
