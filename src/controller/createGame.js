@@ -32,6 +32,7 @@ const createGame = async (req, res, next) => {
       isNewGame,
       isFree,
       relatedApps,
+      faqs,
     } = req.body;
 
     // 🔹 Validation
@@ -53,10 +54,23 @@ const createGame = async (req, res, next) => {
       logoUrl = req.file.path;
     }
 
-    // 🔹 Normalize tags (Postman sends string sometimes)
     let parsedTags = tags;
     if (typeof tags === "string") {
       parsedTags = tags.split(",").map(t => t.trim());
+    }
+
+    // 🔹 Parse faqs
+    let parsedFaqs = [];
+    if (faqs) {
+      if (typeof faqs === "string") {
+        try {
+          parsedFaqs = JSON.parse(faqs);
+        } catch (e) {
+          console.error("Error parsing faqs", e);
+        }
+      } else {
+        parsedFaqs = faqs;
+      }
     }
 
     // 🔹 Create object explicitly
@@ -77,6 +91,7 @@ const createGame = async (req, res, next) => {
       isNewGame,
       isFree,
       relatedApps,
+      faqs: parsedFaqs,
     };
 
     const game = await Game.create(gameData);

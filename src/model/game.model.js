@@ -23,6 +23,12 @@ const gameSchema = new mongoose.Schema(
         ref: "Game",
       },
     ],
+    faqs: [
+      {
+        question: { type: String, required: true },
+        answer: { type: String, required: true },
+      },
+    ],
   },
   { timestamps: true }
 );

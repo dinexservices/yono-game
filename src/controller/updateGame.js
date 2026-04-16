@@ -33,6 +33,7 @@ const updateGame = async (req, res, next) => {
             isNewGame,
             isFree,
             relatedApps,
+            faqs,
         } = req.body;
 
         // 🔹 Find existing game
@@ -68,6 +69,19 @@ const updateGame = async (req, res, next) => {
                 updateData.tags = tags.split(",").map(t => t.trim());
             } else {
                 updateData.tags = tags;
+            }
+        }
+
+        // 🔹 Handle faqs
+        if (faqs) {
+            if (typeof faqs === "string") {
+                try {
+                    updateData.faqs = JSON.parse(faqs);
+                } catch (e) {
+                    console.error("Error parsing faqs", e);
+                }
+            } else {
+                updateData.faqs = faqs;
             }
         }
 
