@@ -22,7 +22,7 @@ export default function Navbar() {
           <Link href="/" className="flex items-center gap-3 group">
             <div className="relative w-10 h-10 rounded-xl overflow-hidden ring-2 ring-blue-300/40 group-hover:ring-blue-200 transition-all duration-300">
               <Image
-                src="/logo.jpg"
+                src="/logo.jpeg"
                 alt="All Yono Games Logo"
                 fill
                 className="object-cover"

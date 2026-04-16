@@ -34,7 +34,7 @@ export default function Banner() {
           <div className="shrink-0">
             <div className="relative w-24 h-24 sm:w-32 sm:h-32 rounded-2xl overflow-hidden ring-4 ring-yellow-400/60 shadow-2xl">
               <Image
-                src="/logo.jpg"
+                src="/logo.jpeg"
                 alt={SITE_NAME}
                 fill
                 className="object-cover"
