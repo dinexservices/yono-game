@@ -14,7 +14,7 @@ export default async function sitemap() {
   }
 
   const appUrls = apps.map((app) => ({
-    url: `${SITE_URL}/app/${app.slug}`,
+    url: `${SITE_URL}/${app.slug}`,
     lastModified: new Date(),
     changeFrequency: "weekly" as const,
     priority: 0.8,
@@ -28,7 +28,7 @@ export default async function sitemap() {
       priority: 1.0,
     },
     {
-      url: `${SITE_URL}/yono`,
+      url: `${SITE_URL}/all-yono-games`,
       lastModified: new Date(),
       changeFrequency: "daily" as const,
       priority: 0.9,

@@ -106,8 +106,8 @@ const organizationSchema = {
   "@type": "Organization",
   name: SITE_NAME,
   url: SITE_URL,
-  logo: `${SITE_URL}/logo.jpg`,
-  sameAs: ["https://t.me/+N3fCKqQK5tYxODdl"],
+  logo: `${SITE_URL}/logo.jpeg`,
+  sameAs: ["https://t.me/+xiZV9WhjGl05OWU9"],
   contactPoint: {
     "@type": "ContactPoint",
     email: "support@AllYonoGames.com",

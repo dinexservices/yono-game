@@ -197,7 +197,7 @@ export default function HomeClient({ showFixedCard = false, filterByTag }: HomeC
 
                     {/* Download Button */}
                     <Link
-                      href="/yono"
+                      href="/all-yono-games"
                       className="shrink-0 flex items-center justify-center gap-1.5 bg-gradient-to-r from-blue-500 to-blue-700 hover:opacity-90 text-white text-[11px] sm:text-sm font-bold px-3 py-1.5 sm:px-5 sm:py-2 rounded-md shadow-sm active:scale-95 transition-all duration-200 mr-1"
                     >
                       <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">

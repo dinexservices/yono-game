@@ -13,11 +13,11 @@ const API = process.env.NEXT_PUBLIC_API_URL || "https://api.allyonoogames.com/ap
 export const metadata: Metadata = {
   title: `${SITE_NAME} – Yono Games List`,
   description: "Browse all Yono marked apps and games on our directory. Best rummy and slots apps.",
-  alternates: { canonical: `${SITE_URL}/yono` },
+  alternates: { canonical: `${SITE_URL}/all-yono-games` },
   openGraph: {
     title: `${SITE_NAME} – Yono Games List`,
     description: "Browse all Yono marked apps and games on our directory. Best rummy and slots apps.",
-    url: `${SITE_URL}/yono`,
+    url: `${SITE_URL}/all-yono-games`,
     siteName: SITE_NAME,
     images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: SITE_NAME }],
     type: "website",
@@ -81,12 +81,13 @@ export default async function YonoGamesPage() {
 
           <div className="mt-4 flex flex-col gap-3">
             <a
-              href="https://t.me/+N3fCKqQK5tYxODdl"
+              href="https://t.me/+xiZV9WhjGl05OWU9"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white font-bold text-sm py-2.5 rounded-xl shadow hover:shadow-md transition-all duration-200 active:scale-95 uppercase tracking-wide"
+              className="w-full flex items-center justify-center gap-2 border-2 border-blue-500 text-blue-600 hover:bg-blue-50 font-semibold text-sm py-2.5 rounded-xl transition-all duration-200"
             >
-              📱 Join Our Telegram Channel
+              <svg className="w-5 h-5 shrink-0" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12.002 12.002 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+              Join Our Telegram Channel
             </a>
           </div>
         </div>
