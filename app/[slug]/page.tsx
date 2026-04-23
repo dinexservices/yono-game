@@ -42,7 +42,8 @@ export async function generateMetadata({
   if (!game) return { title: "App Not Found" };
 
   const title = `${game.name} APK Download – ₹${game.signupBonus} Signup Bonus | ${SITE_NAME}`;
-  const description = `Download ${game.name} APK for free on All Yono Games. Get ₹${game.signupBonus} signup bonus with minimum withdrawal of ₹${game.minWithdraw}. Rated ${game.rating}/5 stars. Category: ${game.category}. ${game.description}`;
+  const plainDescription = (game.description || "").replace(/<[^>]*>?/gm, '');
+  const description = `Download ${game.name} APK for free on All Yono Games. Get ₹${game.signupBonus} signup bonus with minimum withdrawal of ₹${game.minWithdraw}. Rated ${game.rating}/5 stars. Category: ${game.category}. ${plainDescription}`;
   const keywords = [
     game.name,
     `${game.name} APK`,
@@ -132,7 +133,7 @@ export default async function AppDetailPage({
                 bestRating: 5,
                 worstRating: 1,
               },
-              description: game.description,
+              description: (game.description || "").replace(/<[^>]*>?/gm, ''),
               url: `${SITE_URL}/${game.slug}`,
               image: game.logoUrl,
               author: { "@type": "Organization", name: SITE_NAME },
@@ -163,7 +164,7 @@ export default async function AppDetailPage({
             {/* Title + Info */}
             <div className="flex-1 min-w-0">
               <h1 className="text-2xl font-extrabold text-slate-800">{game.name}</h1>
-              <p className="text-blue-600 font-medium text-sm mt-0.5">{game.description}</p>
+              <div className="text-blue-600 font-medium text-sm mt-0.5" dangerouslySetInnerHTML={{ __html: game.description || "" }} />
               {game.isNewGame && (
                 <span className="inline-flex mt-2 items-center bg-emerald-100 text-emerald-700 text-xs font-bold px-3 py-1 rounded-full">
                   ✨ New App
@@ -238,10 +239,10 @@ export default async function AppDetailPage({
 
         {/* Description */}
         <div className="bg-white rounded-2xl border border-blue-100 shadow-sm p-6 mb-6">
-          <h2 className="text-slate-800 font-bold text-lg mb-3 border-b border-blue-50 pb-3">
+          <h1 className="text-slate-800 font-bold text-lg mb-3 border-b border-blue-50 pb-3">
             {game.name} APK – Download &amp; Receive ₹{game.signupBonus} Bonus
-          </h2>
-          <p className="text-slate-600 text-sm leading-relaxed">{game.longDescription}</p>
+          </h1>
+          <div className="text-slate-600 text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: game.longDescription || "" }} />
 
           {/* Key details */}
           <div className="mt-5 grid grid-cols-2 gap-3">
