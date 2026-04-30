@@ -10,7 +10,7 @@ const inter = Inter({
 });
 
 const SITE_NAME = "All Yono Games";
-const SITE_URL = "https://www.allyonoogames.com";
+const SITE_URL = "https://allyonoogames.com";
 const SITE_DESCRIPTION =
   "Discover and download 50+ top Yono earning apps — Yono Rummy, Yono 777, Jaiho Games, Slots & more. Compare signup bonuses, withdrawal limits, and ratings on All Yono Games.";
 

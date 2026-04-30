@@ -2,7 +2,7 @@
 import type { Metadata } from "next";
 import HomeClient from "./_home_client";
 
-const SITE_URL = "https://www.allyonoogames.com";
+const SITE_URL = "https://allyonoogames.com";
 const SITE_NAME = "All Yono Games";
 
 const allKeywords = [
