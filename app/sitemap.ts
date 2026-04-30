@@ -15,7 +15,7 @@ export default async function sitemap() {
 
   const appUrls = apps.map((app) => ({
     url: `${SITE_URL}/${app.slug}`,
-    lastModified: new Date(),
+    lastModified: app.createdAt ? new Date(app.createdAt) : new Date("2025-01-01"),
     changeFrequency: "weekly" as const,
     priority: 0.8,
   }));

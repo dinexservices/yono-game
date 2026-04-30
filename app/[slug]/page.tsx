@@ -32,6 +32,19 @@ async function getAllGames(): Promise<Game[]> {
   }
 }
 
+/**
+ * Pre-renders all game slug pages at build time so Googlebot always finds
+ * fully-rendered HTML. Falls back to on-demand ISR for any new games added
+ * after the last build (Next.js default with `revalidate: 60`).
+ */
+export async function generateStaticParams() {
+  const games = await getAllGames();
+
+  return games.map((game) => ({
+    slug: game.slug,
+  }));
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -41,17 +54,36 @@ export async function generateMetadata({
   const game = await getGameBySlug(slug);
   if (!game) return { title: "App Not Found" };
 
-  const title = `${game.name} APK Download – ₹${game.signupBonus} Signup Bonus | ${SITE_NAME}`;
-  const plainDescription = (game.description || "").replace(/<[^>]*>?/gm, '');
-  const description = `Download ${game.name} APK for free on All Yono Games. Get ₹${game.signupBonus} signup bonus with minimum withdrawal of ₹${game.minWithdraw}. Rated ${game.rating}/5 stars. Category: ${game.category}. ${plainDescription}`;
+  const plainDescription = (game.longDescription || game.description || "")
+    .replace(/<[^>]*>?/gm, "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 120);
+
+  const title = `${game.name} APK Download – ₹${game.signupBonus} Bonus | ${SITE_NAME}`;
+
+  // Natural, unique description per game — avoids the mechanical template that
+  // triggers Google's duplicate-content filter.
+  const description = [
+    `${game.name} is a ${game.category || "earning"} app`,
+    game.signupBonus ? `offering a ₹${game.signupBonus} signup bonus` : "",
+    game.minWithdraw ? `with a minimum withdrawal of ₹${game.minWithdraw}` : "",
+    `and a ${game.rating || "4"}/5 star rating.`,
+    plainDescription ? plainDescription + "." : "",
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .slice(0, 160);
+
   const keywords = [
     game.name,
     `${game.name} APK`,
     `${game.name} download`,
-    `${game.name} signup bonus`,
+    `${game.name} earning app`,
     ...(game.tags || []),
-    "all yono games", "yono games", "allyonoogames.com",
-    "real money games india", "earning apps india",
+    "all yono games",
+    "yono games",
+    "allyonoogames.com",
   ].join(", ");
 
   return {
