@@ -22,7 +22,7 @@ app.use(
       "https://localhost:3000",
       "http://localhost:3001",
       "https://localhost:3001",
-      "https://www.allyonoogames.com",
+      "https://allyonoogames.com",
     ],
     credentials: true,
     exposedHeaders: ["set-cookie"],
