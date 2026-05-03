@@ -65,7 +65,7 @@ export async function generateMetadata({
   // Natural, unique description per game — avoids the mechanical template that
   // triggers Google's duplicate-content filter.
   const description = [
-    `${game.name} is a ${game.category || "earning"} app`,
+    `${game.name} is a ${game.category } app`,
     game.signupBonus ? `offering a ₹${game.signupBonus} signup bonus` : "",
     game.minWithdraw ? `with a minimum withdrawal of ₹${game.minWithdraw}` : "",
     `and a ${game.rating || "4"}/5 star rating.`,
@@ -79,7 +79,7 @@ export async function generateMetadata({
     game.name,
     `${game.name} APK`,
     `${game.name} download`,
-    `${game.name} earning app`,
+    `${game.name} app`,
     ...(game.tags || []),
     "all yono games",
     "yono games",

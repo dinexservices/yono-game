@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     locale: "en_IN",
     url: SITE_URL,
     siteName: SITE_NAME,
-    title: `${SITE_NAME} – Download All Yono Rummy, Slots & Earning Apps`,
+    title: `${SITE_NAME} – Download All Yono Games`,
     description: SITE_DESCRIPTION,
     images: [
       {
