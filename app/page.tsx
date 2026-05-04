@@ -2,11 +2,11 @@
 import type { Metadata } from "next";
 import HomeClient from "./_home_client";
 
-const SITE_URL = "https://allyonoogames.com";
-const SITE_NAME = "All Yono Games";
+const SITE_URL = "https://yonoworld.xyz";
+const SITE_NAME = "Yono World";
 
 const allKeywords = [
-  "all yono games", "yono games", "allyonoogames.com",
+  "all yono games", "yono games", "yonoworld.xyz",
   "yono rummy", "yono 777", "jaiho games", "yono slots",
   "earning apps india", "real money games india",
   "yono games list 2026", "yono app download",
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     title: `${SITE_NAME} – Yono Games`,
     description:
-      "Browse 50+ Yono apps with bonuses, ratings  — updated daily on All Yono Games.",
+      "Browse 50+ Yono apps with bonuses, ratings  — updated daily on Yono World.",
     images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: SITE_NAME }],
   },
   twitter: {

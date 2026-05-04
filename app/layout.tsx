@@ -9,13 +9,13 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-const SITE_NAME = "All Yono Games";
-const SITE_URL = "https://allyonoogames.com";
+const SITE_NAME = "Yono World";
+const SITE_URL = "https://yonoworld.xyz";
 const SITE_DESCRIPTION =
-  "Discover and download 50+ top Yono earning apps — Yono Rummy, Yono 777, Jaiho Games, Slots & more. Compare signup bonuses, withdrawal limits, and ratings on All Yono Games.";
+  "Discover and download 50+ top Yono earning apps — Yono Rummy, Yono 777, Jaiho Games, Slots & more. Compare signup bonuses, withdrawal limits, and ratings on Yono World.";
 
 const ALL_KEYWORDS = [
-  "all yono games", "yono games", "allyonoogames.com",
+  "all yono games", "yono games", "yonoworld.xyz",
   "yono rummy", "yono 777", "jaiho games", "yono slots",
   "earning apps india", "real money games india",
   "yono games list 2026", "yono app download",

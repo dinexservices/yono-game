@@ -11,14 +11,14 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/:path*",
-        has: [{ type: "host", value: "allyonoogames.com" }],
-        destination: "https://www.allyonoogames.com/:path*",
+        has: [{ type: "host", value: "yonoworld.xyz" }],
+        destination: "https://www.yonoworld.xyz/:path*",
         permanent: true, // 301
       },
     ];
   },
 
-  allowedDevOrigins: ["www.allyonoogames.com", "allyonoogames.com"],
+  allowedDevOrigins: ["www.yonoworld.xyz", "yonoworld.xyz"],
   images: {
     remotePatterns: [
       {

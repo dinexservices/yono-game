@@ -1,7 +1,7 @@
 import type { Game } from "./types";
 
-const SITE_URL = "https://allyonoogames.com";
-const API = process.env.NEXT_PUBLIC_API_URL || "https://api.allyonoogames.com/api";
+const SITE_URL = "https://yonoworld.xyz";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.yonoworld.xyz/api";
 
 export default async function sitemap() {
   let apps: Game[] = [];
