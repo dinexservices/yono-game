@@ -5,41 +5,57 @@ const API =
   process.env.NEXT_PUBLIC_API_URL ||
   "https://api.allyonoogames.com/api";
 
-// ✅ Cache sitemap for 1 hour (VERY IMPORTANT)
+// ✅ force static generation
+export const dynamic = "force-static";
 export const revalidate = 3600;
 
-// ✅ Timeout-safe fetch
-async function fetchWithTimeout(url: string, timeout = 4000) {
-  const controller = new AbortController();
-  const id = setTimeout(() => controller.abort(), timeout);
-
+async function getApps(): Promise<Game[]> {
   try {
-    const res = await fetch(url, {
-      signal: controller.signal,
-      headers: {
-        Accept: "application/json",
-      },
-      next: { revalidate: 60 },
+    const res = await fetch(`${API}/get-all-game`, {
+      next: { revalidate: 3600 },
     });
 
-    clearTimeout(id);
+    if (!res.ok) return [];
 
-    if (!res.ok) throw new Error("API failed");
-
-    return res.json();
-  } catch (error) {
-    clearTimeout(id);
-    console.warn("Sitemap API failed:", error);
-    return { data: [] }; // ✅ fallback so sitemap still works
+    const data = await res.json();
+    return (data.data || []).filter(Boolean);
+  } catch {
+    return [];
   }
 }
 
 export default async function sitemap() {
+  // ✅ IMPORTANT: don't block if API slow
+  const appsPromise = getApps();
+
+  const staticPages = [
+    {
+      url: SITE_URL,
+      lastModified: new Date(),
+    },
+    {
+      url: `${SITE_URL}/all-yono-games`,
+      lastModified: new Date(),
+    },
+    {
+      url: `${SITE_URL}/contact`,
+      lastModified: new Date(),
+    },
+    {
+      url: `${SITE_URL}/privacy-policy`,
+      lastModified: new Date(),
+    },
+  ];
+
   let apps: Game[] = [];
 
   try {
-    const data = await fetchWithTimeout(`${API}/get-all-game`, 4000);
-    apps = (data.data || []).filter(Boolean);
+    apps = await Promise.race([
+      appsPromise,
+      new Promise<Game[]>((resolve) =>
+        setTimeout(() => resolve([]), 3000) // ✅ HARD TIMEOUT
+      ),
+    ]);
   } catch {
     apps = [];
   }
@@ -48,45 +64,8 @@ export default async function sitemap() {
     url: `${SITE_URL}/${app.slug}`,
     lastModified: app.createdAt
       ? new Date(app.createdAt)
-      : new Date("2025-01-01"),
-    changeFrequency: "weekly" as const,
-    priority: 0.8,
+      : new Date(),
   }));
 
-  return [
-    // ✅ Main pages
-    {
-      url: SITE_URL,
-      lastModified: new Date(),
-      changeFrequency: "daily" as const,
-      priority: 1.0,
-    },
-    {
-      url: `${SITE_URL}/all-yono-games`,
-      lastModified: new Date(),
-      changeFrequency: "daily" as const,
-      priority: 0.9,
-    },
-    {
-      url: `${SITE_URL}/contact`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.4,
-    },
-    {
-      url: `${SITE_URL}/disclaimer`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.4,
-    },
-    {
-      url: `${SITE_URL}/privacy-policy`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.4,
-    },
-
-    // ✅ Dynamic pages
-    ...appUrls,
-  ];
+  return [...staticPages, ...appUrls];
 }
