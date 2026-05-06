@@ -9,7 +9,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/api/", "/_next/", "/static/"],
       },
     ],
-    sitemap: "https://yonoworld.xyz/sitemap.xml",
-    host: "https://yonoworld.xyz",
+    sitemap: "https://www.yonoworld.xyz/sitemap.xml",
+    host: "https://www.yonoworld.xyz",
   };
 }

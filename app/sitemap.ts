@@ -1,6 +1,6 @@
 import type { Game } from "./types";
 
-const SITE_URL = "https://yonoworld.xyz";
+const SITE_URL = "https://www.yonoworld.xyz";
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.yonoworld.xyz/api";
 
 export default async function sitemap() {
